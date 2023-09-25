@@ -51,6 +51,7 @@ function update(id, title, body) {
 
 function destroy(id) {
   // Hapus Data
+//   ini hapus
     
 }
 
