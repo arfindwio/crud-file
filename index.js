@@ -1,12 +1,29 @@
 const { create, index, show, update, destroy } = require('./helpers/crud');
 
-// test create post
-create('test title', 'test data');
-// test show all post
-index();
-// test show detail post by id
-console.log(show(3))
-// test update post by id
-update(3,'hafid','awkoawkowakowa')
-// test delete post by id
-destroy()
+
+async function main() {
+    try {
+        // test create post
+        // let newPost = await create('judul', 'data2');
+        // console.log(newPost);
+
+        // // test show all post
+        let posts = await index();
+        console.log(posts);
+
+        // // test show detail post by id
+        // let post = await show(1);
+        // console.log(post);
+
+        // // test update post by id
+        // let updatedPost = await update(1, 'title baru dua');
+        // console.log(updatedPost);
+
+        // // test delete post by id
+        // let deletedPost = await destroy(1);
+        // console.log(deletedPost);
+    } catch (err) {
+        console.log(err);
+    }
+}
+main();

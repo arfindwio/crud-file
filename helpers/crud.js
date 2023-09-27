@@ -1,58 +1,58 @@
-const fs = require("fs");
-const posts = require("../database/posts");
-const PostModel = require("../models/post");
+const fs = require('fs');
+const posts = require('../database/posts');
+const PostModel = require('../models/post');
+const pool = require('../database/postgres');
 
 function create(title, body) {
-  let newPost = new PostModel(posts.id++, title, body);
-  posts.data.push(newPost);
-
-  fs.writeFileSync("./database/posts.json", JSON.stringify(posts, null, 4));
+    return new Promise(async (resolve, reject) => {
+        try {
+            let result = await pool.query("INSERT INTO posts (title, body) values ($1, $2) RETURNING *;", [title, body]);
+            resolve(result.rows[0]);
+        } catch (err) {
+            return reject(err);
+        }
+    });
 }
 
-function index() {
-  // Menampilkan semua data
-  // let dataDb = fs.readFileSync('./database/posts.json','utf-8');
-  let { data } = posts;
-  for (const value of data) {
-    console.log(
-      `Data ke ${value.id} ,Judul =  ${value.title} , Body =  ${value.body}`
-    );
-    console.log("\n");
-  }
+async function index() {
+    let result = await pool.query("SELECT *  FROM posts")
+    return result.rows;
 }
 
 function show(id) {
-  // Menampilkan Bedasarkan Id
-  if (!id) {
-    return "ID Harus Ada";
-  }
-  const showData = posts.data.find((post) => post.id === id);
-  if (!showData) {
-    return "Data Tidak Ditemukan";
-  }
-  return showData;
+    return new Promise(async(resolve, reject) => {
+        let result = await pool.query("SELECT * FROM posts where id = $1",[id])
+
+        if (!result.rows.length) return reject(`post with id ${id} is doesn't exist!`);
+
+        resolve(result.rows[0]);
+    });
 }
 
 function update(id, title, body) {
-  // Update Data
-  const postUpdate = posts.data.find((post) => post.id === id);
+    return new Promise((resolve, reject) => {
+        let postIndex = posts.data.findIndex(post => post.id === id);
 
-  if (!postUpdate) {
-    return "Post tidak ditemukan";
-  }
+        if (postIndex < 0) return reject(`post with id ${id} is doesn't exist!`);
+        if (title) posts.data[postIndex].title = title;
+        if (body) posts.data[postIndex].body = body;
 
-  postUpdate.title = title;
-  postUpdate.body = body;
-
-  fs.writeFileSync("./database/posts.json", JSON.stringify(posts, null, 4));
-
-  return "Pos berhasil diperbarui";
+        fs.writeFileSync('./database/posts.json', JSON.stringify(posts, null, 4));
+        resolve(posts.data[postIndex]);
+    });
 }
 
+
 function destroy(id) {
-  // Hapus Data
-//   ini hapus
-    
+    return new Promise(async(resolve, reject) => {
+        let result = await pool.query("SELECT * FROM posts where id = $1",[id]);
+
+        if (!result.rows.length) return reject(`post with id ${id} is doesn't exist!`);
+
+       let updateData = await pool.query("DELETE posts WHERE id = $1 RETURNING *;", [id])
+       console.log(updateData)
+        resolve(`post with id ${id} is deleted!`);
+    });
 }
 
 module.exports = { create, index, show, update, destroy };
