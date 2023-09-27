@@ -21,6 +21,7 @@ async function main() {
     // // test delete post by id
     // let deletedPost = await destroy(1);
     // console.log(deletedPost);
+    // halo2
   } catch (err) {
     console.log(err);
   }
