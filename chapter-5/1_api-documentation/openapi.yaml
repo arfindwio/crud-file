@@ -295,7 +295,7 @@ paths:
                     example: "IdUser not exist"
                   data:
                     type: object
-                    example: null                    
+                    example: null
   "/posts":
     post:
       tags:
@@ -379,3 +379,51 @@ paths:
                     example: "Bad Request"
                   data:
                     type: object
+  "/posts/{postId}":
+    get:
+      tags:
+        - post
+      operationId: get-fetch-all-post
+      summary: ini summary
+      description: ini description
+      parameters:
+        - name: postId
+          in: path
+          description: ID of post to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                    example: "OK"
+                  data:
+                    type: object
+                    properties:
+                      users:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            title:
+                              type: string
+                              example: "ini title"
+                            isPublished:
+                              type: boolean
+                              example: false
+                            authorId:
+                              type: integer
+                              example: 1
