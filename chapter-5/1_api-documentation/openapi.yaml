@@ -21,7 +21,7 @@ paths:
       tags:
         - user
       operationId: post-create-new-user
-      summary: ini summary
+      summary: ini post users
       description: ini description
       requestBody:
         content:
@@ -80,7 +80,7 @@ paths:
       tags:
         - user
       operationId: get-fetch-all-user
-      summary: ini summary
+      summary: ini get semua users
       description: ini description
       parameters:
         - in: query
@@ -142,7 +142,7 @@ paths:
       tags:
         - user
       operationId: get-fetch-user-detail
-      summary: ini summary
+      summary: ini get user detail
       description: ini description
       parameters:
         - in: path
@@ -176,6 +176,126 @@ paths:
                       email:
                         type: string
                         example: "bujang@mail.com"
+    put:
+      tags:
+        - user
+      operationId: put-fetch-user-detail
+      summary: ini put
+      description: ini description
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: "userId wajib diisi"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "bujang"
+                email:
+                  type: string
+                  example: "bujang@mail.com"
+      responses:
+        "201":
+          description: update users
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                    example: "Succes update users"
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: "bujang update"
+                      email:
+                        type: string
+                        example: "bujang@mail.com"
+        "400":
+          description: Fail Update Users
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Email Alrady exist"
+                  data:
+                    type: object
+                    example: null
+    delete:
+      tags:
+        - user
+      operationId: detele user detail
+      summary: ini delete
+      description: ini description
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: "userId wajib diisi"
+      responses:
+        "200":
+          description: delete users
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                    example: "Succes delete users"
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: "bujang"
+                      email:
+                        type: string
+                        example: "bujang@mail.com"
+        "400":
+          description: Fail Update Users
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "IdUser not exist"
+                  data:
+                    type: object
+                    example: null                    
   "/posts":
     post:
       tags:
