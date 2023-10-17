@@ -2,6 +2,39 @@ POST http://localhost:3000/api/v1/users
 Content-Type: application/json
 
 {
-    "email":"jason2@mail.com",
+    "name": "jason",
+    "email":"jason1@mail.com",
     "password":"password123"
 }
+
+###
+GET http://localhost:3000/api/v1/users/12
+
+###
+POST http://localhost:3000/api/v1/articles
+Content-Type: application/json
+
+{
+    "title": "jason1",
+    "bodyArticle":"jason1",
+    "user_id": 73
+}
+
+###
+GET http://localhost:3000/api/v1/articles
+
+###
+GET http://localhost:3000/api/v1/articles/35
+
+###
+PUT http://localhost:3000/api/v1/articles/35
+Content-Type: application/json
+
+{
+    "title": "articletest2",
+    "bodyArticle":"articletest2",
+    "user_id": 65
+}
+
+###
+DELETE  http://localhost:3000/api/v1/articles/41
